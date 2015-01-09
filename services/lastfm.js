@@ -50,6 +50,7 @@ exports.getLastfm = function (text) {
     limit: 1
   };
 
+  // Send Last.fm call
   lfm.user.getRecentTracks(lastfm, function (error, tracks) {
     if (!error) {
       var text = prepareResponse(tracks);
