@@ -1,0 +1,20 @@
+{
+  "name": "iteam-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": " "
+  },
+  "author": "Rickard Laurin <rickard.laurin@gmail.com> (http://rickardlaurin.se/)",
+  "license": "ISC",
+  "dependencies": {
+    "lastfmapi": "0.0.5",
+    "q": "^1.1.2",
+    "slack-client": "^1.2.2"
+  }
+}
