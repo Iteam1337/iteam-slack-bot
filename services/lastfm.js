@@ -15,14 +15,14 @@ var lfm = new LastfmAPI({
  * @param  {string} body - Last.fm API data
  * @return {obj} - Response object prepared for Slack
  */
-exports.prepareResponse = function (lastfm) {
+function prepareResponse (lastfm) {
   var track      = lastfm.track[0] || lastfm.track;
   var user       = lastfm["@attr"].user;
   var whenPlayed = lastfm.track.artist ? '*Last played:* ' : '';
   var sendUser   = (user !== 'iteam1337') ? ' (_' + user + '_)' : '';
 
   return whenPlayed + track.artist['#text'] + ' - ' + track.name + sendUser;
-};
+}
 
 /**
  * Prepare request URL
@@ -31,10 +31,10 @@ exports.prepareResponse = function (lastfm) {
  * @param  {obj} body - Request body from POST
  * @return {string} - URL for Last.fm request
  */
-exports.prepareUser = function (text) {
+function prepareUser (text) {
   var user = text.split(':')[1] ? text.split(':')[1].trim().split(' ')[0] : 'iteam1337';
   return user;
-};
+}
 
 /**
  * Send request with correct username to Last.fm
@@ -46,13 +46,13 @@ exports.getLastfm = function (text) {
 
   // Last.fm params
   var lastfm = {
-    user: exports.prepareUser(text),
+    user: prepareUser(text),
     limit: 1
   };
 
   lfm.user.getRecentTracks(lastfm, function (error, tracks) {
     if (!error) {
-      var text = exports.prepareResponse(tracks);
+      var text = prepareResponse(tracks);
       deferred.resolve(text);
     }
   });
