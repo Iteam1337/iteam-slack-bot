@@ -52,7 +52,9 @@ slack.on('message', function (message) {
 	}
 });
 
+//
 // Error
+// --------------------------------------------------
 slack.on('error', function (error) {
 	console.error('Error: %s', error);
 });
