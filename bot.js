@@ -1,5 +1,5 @@
 var Slack  = require('slack-client');
-var LastFm = require('./services/lastfm');
+var Bot    = require('./services/bot');
 
 var token         = process.env.SLACK_TOKEN;
 var autoReconnect = true;
@@ -40,14 +40,13 @@ slack.on('message', function (message) {
 	var channel  = slack.getChannelGroupOrDMByID(message.channel);
 	var text     = message.text;
 
-	if (type === 'message') {
-		// Respond with now playing song of user
-		if (text.indexOf('np') > -1) {
-			LastFm
-				.getLastfm(text)
-				.then(function (data) {
-					channel.send(data);
-				});
+	var command = text.match(/\s[a-z]*/i)[0].trim();
+
+	if (type === 'message' && command) {
+		if (Bot.service()[command]) {
+			Bot.service()[command](text, channel);
+		} else {
+			channel.send('Jag förstår inte vad du menar');
 		}
 	}
 });
