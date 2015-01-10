@@ -36,11 +36,12 @@ slack.on('open', function() {
 // When a message is received
 // --------------------------------------------------
 slack.on('message', function (message) {
-	var type     = message.type;
-	var channel  = slack.getChannelGroupOrDMByID(message.channel);
-	var text     = message.text;
+	var type    = message.type;
+	var channel = slack.getChannelGroupOrDMByID(message.channel);
+	var text    = message.text;
+	var botID   = '<@U03AW9QEV>';
 
-	var command = text.substr(0,5) === 'iteam' && text.length > 5 ? text.match(/\s[a-z]*/i)[0].trim() : '';
+	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-z]*/i)[0].trim() : '';
 
 	if (type === 'message' && command) {
 		if (Bot.service()[command]) {
