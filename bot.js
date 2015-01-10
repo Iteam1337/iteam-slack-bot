@@ -7,6 +7,10 @@ var autoMark      = true;
 
 var slack = new Slack(token, autoReconnect, autoMark);
 
+function showHelp (channel) {
+	channel.send('_Du kan skriva:_\n*np* - visa vilken låt som spelas\n*np:{username}* - visa vilken låt du spelar (Last.fm-användarnamn)');
+}
+
 //
 // When bot is connected
 // --------------------------------------------------
@@ -41,13 +45,21 @@ slack.on('message', function (message) {
 	var text    = message.text;
 	var botID   = '<@U03AW9QEV>';
 
-	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-z]*/i)[0].trim() : '';
 
+	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö]*/i)[0].trim() : '';
+
+	// Show help
+	if (text === botID || command === 'help' || command === 'hjälp') {
+		showHelp(channel);
+		return;
+	}
+
+	// If message with command
 	if (type === 'message' && command) {
 		if (Bot.service()[command]) {
 			Bot.service()[command](text, channel);
 		} else {
-			channel.send('Jag förstår inte vad du menar');
+			showHelp(channel);
 		}
 	}
 });
