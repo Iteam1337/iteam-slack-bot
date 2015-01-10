@@ -40,7 +40,7 @@ slack.on('message', function (message) {
 	var channel  = slack.getChannelGroupOrDMByID(message.channel);
 	var text     = message.text;
 
-	var command = text.substr(0,5) === 'iteam' ? text.match(/\s[a-z]*/i)[0].trim() : '';
+	var command = text.substr(0,5) === 'iteam' && text.length > 5 ? text.match(/\s[a-z]*/i)[0].trim() : '';
 
 	if (type === 'message' && command) {
 		if (Bot.service()[command]) {
