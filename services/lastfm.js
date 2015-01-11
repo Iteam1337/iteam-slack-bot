@@ -32,6 +32,7 @@ function prepareResponse (lastfm) {
  * @return {string} - URL for Last.fm request
  */
 function prepareUser (text) {
+  text = text.replace('<@U03AW9QEV>:', '');
   var user = text.split(':')[1] ? text.split(':')[1].trim().split(' ')[0] : 'iteam1337';
   return user;
 }
