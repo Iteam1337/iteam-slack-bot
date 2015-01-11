@@ -7,19 +7,6 @@ var autoMark      = true;
 
 var slack = new Slack(token, autoReconnect, autoMark);
 
-function showHelp (channel) {
-	var text = [
-		'*Användning:*',
-		'@iteam [alternativ]',
-		'*Alternativ:*',
-		'_help/hjälp_\t\t\t\t\tvisar denna hjälp',
-		'_np_\t\t\t\t\t\t\t\tvisar vilken låt som spelas',
-		'_np:{användarnamn}_\tvisar vilken låt du spelar (Last.fm-användarnamn)'
-	];
-
-	channel.send(text.join('\n'));
-}
-
 //
 // When bot is connected
 // --------------------------------------------------
@@ -57,8 +44,8 @@ slack.on('message', function (message) {
 	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö]*/i)[0].trim() : '';
 
 	// Show help
-	if (text === botID || command === 'help' || command === 'hjälp') {
-		showHelp(channel);
+	if (text === botID) {
+		Bot.service().help(text, channel);
 		return;
 	}
 
@@ -67,7 +54,7 @@ slack.on('message', function (message) {
 		if (Bot.service()[command]) {
 			Bot.service()[command](text, channel);
 		} else {
-			showHelp(channel);
+			Bot.service().help(text, channel);
 		}
 	}
 });
