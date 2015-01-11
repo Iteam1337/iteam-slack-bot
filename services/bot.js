@@ -5,12 +5,15 @@ var request = require('request');
 
 function showHelp (channel) {
   var text = [
-    '*Användning:*',
-    '@iteam [alternativ]',
-    '*Alternativ:*',
-    '_help/hjälp_\t\t\t\t\tvisar denna hjälp',
-    '_np_\t\t\t\t\t\t\t\tvisar vilken låt som spelas',
-    '_np:{användarnamn}_\tvisar vilken låt du spelar (Last.fm-användarnamn)'
+    '```Användning:',
+    '@iteam [alternativ]\n',
+    'Alternativ:',
+    'fml                slumpa en FML från fmylife.com',
+    'help/hjälp         visar denna hjälp',
+    'np                 visar vilken låt som spelas',
+    'np:{användarnamn}  visar vilken låt du spelar (Last.fm-användarnamn)',
+    'sl                 visar närmaste avgångarna från Rådmansgatan',
+    'sl {station}       visar närmaste avångarna från angiven station```'
   ];
 
   channel.send(text.join('\n'));
@@ -60,6 +63,49 @@ exports.service = function () {
         .then(function (data) {
           channel.send(data);
         });
+    },
+    sl: function (text, channel) {
+      var baseUrl = 'http://api.sl.se/api2/';
+      var plats = baseUrl + 'typeahead.json?key={key}&searchstring={search}&stationsonly=true&maxresults=1';
+      var real = baseUrl + 'realtimedepartures.json?key={key}&siteid={id}'
+      var match = text.match(/sl\s[a-zåäö-]*/i);
+      var station = match ? match[0].substr(3) : 'Rådmansgatan';
+      
+      var keyPlats = process.env.SL_PLATS;
+      var keyReal = process.env.SL_REAL;
+
+      plats = plats.replace('{key}', keyPlats).replace('{search}', station);
+
+      request(plats, function (error, response, body) {
+        body = JSON.parse(body);
+
+        if (body.StatusCode !== 0) {
+          channel.send('Något gick snett');
+          return;
+        }
+
+        if (!body.ResponseData[0]) {
+          channel.send('Kan inte hitta någon station med namnet *' + station);
+          return;
+        }
+
+        var name = body.ResponseData[0].Name;
+        var id = body.ResponseData[0].SiteId;
+
+        real = real.replace('{key}', keyReal).replace('{id}', id);
+
+        request(real, function (error, response, body) {
+          body = JSON.parse(body);
+          var metros = body.ResponseData.Metros;
+          var departures = [];
+
+          metros.forEach(function (metro) {
+            departures.push('*' + metro.LineNumber + ' ' + metro.Destination + '*\n' + metro.DisplayTime);
+          });
+
+          channel.send('*' + name + '*\n' + departures.join('\n'));
+        });
+      });
     }
   }
 };
