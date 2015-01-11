@@ -1,4 +1,7 @@
-var LastFm = require('./lastfm');
+'use strict';
+
+var LastFm  = require('./lastfm');
+var request = require('request');
 
 function showHelp (channel) {
   var text = [
@@ -15,6 +18,18 @@ function showHelp (channel) {
 
 exports.service = function () {
   return {
+    fml: function (text, channel) {
+      var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
+
+      request(url, function (error, data, body) {
+        body = JSON.parse(body);
+        var fmls = body.responseData.feed.entries;
+        var randomFml = fmls[Math.floor(Math.random()*fmls.length)];
+        var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
+
+        channel.send(fml);
+      });
+    },
     /**
      * Show help
      * @param  {[type]} text    [description]
