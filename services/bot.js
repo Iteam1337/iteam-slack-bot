@@ -21,11 +21,18 @@ function showHelp (channel) {
 
 exports.service = function () {
   return {
+    /**
+     * Display a random FML from fmylife.com
+     * @param  {string} text    [description]
+     * @param  {[type]} channel [description]
+     * @return {[type]}         [description]
+     */
     fml: function (text, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
 
       request(url, function (error, data, body) {
         body = JSON.parse(body);
+
         var fmls = body.responseData.feed.entries;
         var randomFml = fmls[Math.floor(Math.random()*fmls.length)];
         var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
@@ -34,8 +41,8 @@ exports.service = function () {
       });
     },
     /**
-     * Show help
-     * @param  {[type]} text    [description]
+     * Display help
+     * @param  {string} text    [description]
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
@@ -43,8 +50,8 @@ exports.service = function () {
       showHelp(channel)
     },
     /**
-     * Show help
-     * @param  {[type]} text    [description]
+     * Display help
+     * @param  {string} text    [description]
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
@@ -52,8 +59,8 @@ exports.service = function () {
       showHelp(channel)
     },
     /**
-     * Show now playing
-     * @param  {[type]} text    [description]
+     * Display now playing
+     * @param  {string} text    [description]
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
@@ -64,6 +71,12 @@ exports.service = function () {
           channel.send(data);
         });
     },
+    /**
+     * Display SL departure times
+     * @param  {[type]} text    [description]
+     * @param  {[type]} channel [description]
+     * @return {[type]}         [description]
+     */
     sl: function (text, channel) {
       var baseUrl = 'http://api.sl.se/api2/';
       var plats = baseUrl + 'typeahead.json?key={key}&searchstring={search}&stationsonly=true&maxresults=1';
