@@ -12,6 +12,7 @@ function showHelp (channel) {
     '```Användning:',
     '@iteam [alternativ]\n',
     'Alternativ:',
+    '9gag               slumpa en bild från 9gags hot-lista',
     'fml                slumpa en FML från fmylife.com',
     'help/hjälp         visar denna hjälp',
     'np                 visar vilken låt som spelas',
@@ -30,7 +31,7 @@ function returnRandom (array) {
 exports.service = function () {
   return {
     '9gag': function (text, channel) {
-      var url = 'http://infinigag.eu01.aws.af.cm/trending/0';
+      var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
       request(url, function (error, response, body) {
         body = JSON.parse(body);
