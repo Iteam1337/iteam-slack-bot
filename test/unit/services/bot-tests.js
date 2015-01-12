@@ -38,5 +38,29 @@ describe('#BotService', function() {
         expect(bot.service().fml).to.be.a('function');
       });
     });
+
+    describe('#help', function() {
+      it('should be a function', function() {
+        expect(bot.service().help).to.be.a('function');
+      });
+    });
+
+    describe('#hjälp', function() {
+      it('should be a function', function() {
+        expect(bot.service().hjälp).to.be.a('function');
+      });
+    });
+
+    describe('#np', function() {
+      it('should be a function', function() {
+        expect(bot.service().np).to.be.a('function');
+      });
+    });
+
+    describe('#sl', function() {
+      it('should be a function', function() {
+        expect(bot.service().sl).to.be.a('function');
+      });
+    });
   });
 });
