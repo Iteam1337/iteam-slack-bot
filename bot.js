@@ -41,6 +41,11 @@ slack.on('message', function (message) {
 	var text    = message.text;
 	var botID   = '<@U03AW9QEV>';
 
+	// Do nothing if there is no text
+	if (!text) {
+		return;
+	}
+
 	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö]*/i)[0].trim() : '';
 
 	// Show help
