@@ -34,11 +34,13 @@ exports.service = function () {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
       request(url, function (error, response, body) {
-        body = JSON.parse(body);
+        if (!error && body) {
+          body = JSON.parse(body);
 
-        var randomGag = returnRandom(body.data);
+          var randomGag = returnRandom(body.data);
 
-        channel.send(randomGag.caption + '\n' + randomGag.images.large);
+          channel.send(randomGag.caption + '\n' + randomGag.images.large);
+        }
       });
     },
 
