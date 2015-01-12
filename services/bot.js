@@ -23,8 +23,23 @@ function showHelp (channel) {
   channel.send(text.join('\n'));
 }
 
+function returnRandom (array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
 exports.service = function () {
   return {
+    '9gag': function (text, channel) {
+      var url = 'http://infinigag.eu01.aws.af.cm/trending/0';
+
+      request(url, function (error, response, body) {
+        body = JSON.parse(body);
+
+        var randomGag = returnRandom(body.data);
+
+        channel.send(randomGag.caption + '\n' + randomGag.images.large);
+      });
+    },
     /**
      * Display a random FML from fmylife.com
      * @param  {string} text    [description]
@@ -38,7 +53,7 @@ exports.service = function () {
         body = JSON.parse(body);
 
         var fmls = body.responseData.feed.entries;
-        var randomFml = fmls[Math.floor(Math.random()*fmls.length)];
+        var randomFml = returnRandom(fmls);
         var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
 
         channel.send(fml);
