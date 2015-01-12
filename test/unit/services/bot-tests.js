@@ -10,6 +10,7 @@ describe('#BotService', function() {
   var lastfm;
   var request;
   var slack;
+  var channel;
 
   beforeEach(function () {
     lastfm = {
@@ -17,6 +18,10 @@ describe('#BotService', function() {
     };
 
     request = sinon.stub();
+
+    channel = {
+      send: sinon.spy()
+    };
 
     bot = proxyquire(process.cwd() + '/services/bot', {
       'request': request,
@@ -37,17 +42,37 @@ describe('#BotService', function() {
       it('should be a function', function() {
         expect(bot.service().fml).to.be.a('function');
       });
+
+      it('should call request with correct url', function() {
+        var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
+          
+        bot.service().fml('fml', {});
+
+        expect(request).calledOnce.and.calledWith(url);
+      });
     });
 
     describe('#help', function() {
       it('should be a function', function() {
         expect(bot.service().help).to.be.a('function');
       });
+
+      it('should call showHelp', function() {
+        bot.service().help('help', channel);
+
+        expect(channel.send).calledOnce;
+      });
     });
 
     describe('#hjälp', function() {
       it('should be a function', function() {
         expect(bot.service().hjälp).to.be.a('function');
+      });
+
+      it('should call showHelp', function() {
+        bot.service().help('help', channel);
+
+        expect(channel.send).calledOnce;
       });
     });
 

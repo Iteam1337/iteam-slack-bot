@@ -3,6 +3,10 @@
 var LastFm  = require('./lastfm');
 var request = require('request');
 
+/**
+ * Displays the help text
+ * @param  {obj} channel - channel object
+ */
 function showHelp (channel) {
   var text = [
     '```Användning:',
@@ -40,6 +44,7 @@ exports.service = function () {
         channel.send(fml);
       });
     },
+
     /**
      * Display help
      * @param  {string} text    [description]
@@ -49,6 +54,7 @@ exports.service = function () {
     help: function (text, channel) {
       showHelp(channel)
     },
+
     /**
      * Display help
      * @param  {string} text    [description]
@@ -58,6 +64,7 @@ exports.service = function () {
     hjälp: function (text, channel) {
       showHelp(channel)
     },
+
     /**
      * Display now playing
      * @param  {string} text    [description]
@@ -71,6 +78,7 @@ exports.service = function () {
           channel.send(data);
         });
     },
+
     /**
      * Display SL departure times
      * @param  {[type]} text    [description]
