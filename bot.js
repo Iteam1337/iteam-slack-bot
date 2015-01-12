@@ -47,7 +47,11 @@ slack.on('message', function (message) {
 		return;
 	}
 
-	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö0-9]*/i)[0].trim() : '';
+	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö0-9]*/i) : '';
+
+	if (command) {
+		command = command[0].trim();
+	}
 
 	// Show help
 	if (text === botID) {
