@@ -17,7 +17,7 @@ function showHelp (channel) {
     'np                 visar vilken låt som spelas',
     'np:{användarnamn}  visar vilken låt du spelar (Last.fm-användarnamn)',
     'sl                 visar närmaste avgångarna från Rådmansgatan',
-    'sl {station}       visar närmaste avångarna från angiven station```'
+    'sl {station}       visar närmaste avgångarna från angiven station```'
   ];
 
   channel.send(text.join('\n'));
