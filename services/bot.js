@@ -40,6 +40,7 @@ exports.service = function () {
         channel.send(randomGag.caption + '\n' + randomGag.images.large);
       });
     },
+
     /**
      * Display a random FML from fmylife.com
      * @param  {string} text    [description]
@@ -68,6 +69,12 @@ exports.service = function () {
      */
     help: function (text, channel) {
       showHelp(channel)
+    },
+
+    hej: function (text, channel, user, slack) {
+      user = slack.getUserByID(user);
+
+      channel.send('Hej, ' + user.profile.first_name + '!');
     },
 
     /**

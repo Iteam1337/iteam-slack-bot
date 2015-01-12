@@ -39,6 +39,7 @@ slack.on('message', function (message) {
 	var type    = message.type;
 	var channel = slack.getChannelGroupOrDMByID(message.channel);
 	var text    = message.text;
+	var user    = message.user || '';
 	var botID   = '<@U03AW9QEV>';
 
 	// Do nothing if there is no text
@@ -46,7 +47,7 @@ slack.on('message', function (message) {
 		return;
 	}
 
-	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö]*/i)[0].trim() : '';
+	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö0-9]*/i)[0].trim() : '';
 
 	// Show help
 	if (text === botID) {
@@ -57,7 +58,7 @@ slack.on('message', function (message) {
 	// If message with command
 	if (type === 'message' && command) {
 		if (Bot.service()[command]) {
-			Bot.service()[command](text, channel);
+			Bot.service()[command](text, channel, user, slack);
 		} else {
 			Bot.service().help(text, channel);
 		}
