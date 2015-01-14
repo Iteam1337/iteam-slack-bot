@@ -1,64 +1,16 @@
 'use strict';
 
-var LastFm  = require('./lastfm');
-var request = require('request');
-var Q       = require('q');
-
-/**
- * Displays the help text
- * @param  {obj} channel - channel object
- */
-function showHelp (channel) {
-  var text = [
-    '```Användning:',
-    '@iteam [alternativ]\n',
-    'Alternativ:',
-    '9gag               slumpa en bild från 9gags hot-lista',
-    'fml                slumpa en FML från fmylife.com',
-    'help/hjälp         visar denna hjälp',
-    'np                 visar vilken låt som spelas',
-    'np:{användarnamn}  visar vilken låt du spelar (Last.fm-användarnamn)',
-    'sl                 visar närmaste avgångarna från Rådmansgatan',
-    'sl {station}       visar närmaste avgångarna från angiven station```'
-  ];
-
-  channel.send(text.join('\n'));
-}
-
-/**
- * Returns a random object from an array
- * @param  {array} array - Array
- * @return {obj, string} - Returns random from array
- */
-function returnRandom (array) {
-  return array[ Math.floor( Math.random() * array.length ) ];
-}
-
-/**
- * Get data from a given URL
- * @param  {string} url - URL to get data from
- * @return {obj} - Promise
- */
-function getDataFromURL (url) {
-  var deferred = Q.defer();
-
-  request(url, function (error, response, body) {
-    body = JSON.parse(body);
-
-    deferred.resolve(body);
-  });
-
-  return deferred.promise;
-}
+var LastFm = require('./lastfm');
+var utils  = require('../utilities/utils');
 
 exports.service = function () {
   return {
     '9gag': function (text, channel) {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
-      getDataFromURL(url)
+      utils.getDataFromURL(url)
         .then(function (data) {
-          var randomGag = returnRandom(data.data);
+          var randomGag = utils.returnRandom(data.data);
 
           channel.send(randomGag.caption + '\n' + randomGag.images.large);
         });
@@ -73,9 +25,9 @@ exports.service = function () {
     fml: function (text, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
 
-      getDataFromURL(url)
+      utils.getDataFromURL(url)
         .then(function (fmls) {
-          var randomFml = returnRandom(fmls.responseData.feed.entries);
+          var randomFml = utils.returnRandom(fmls.responseData.feed.entries);
           var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
 
           channel.send(fml);
@@ -89,7 +41,7 @@ exports.service = function () {
      * @return {[type]}         [description]
      */
     help: function (text, channel) {
-      showHelp(channel)
+      utils.showHelp(channel)
     },
 
     hej: function (text, channel, user, slack) {
@@ -105,7 +57,7 @@ exports.service = function () {
      * @return {[type]}         [description]
      */
     hjälp: function (text, channel) {
-      showHelp(channel)
+      utils.showHelp(channel)
     },
 
     /**
@@ -140,8 +92,7 @@ exports.service = function () {
 
       plats = plats.replace('{key}', keyPlats).replace('{search}', station);
 
-      request(plats, function (error, response, body) {
-      getDataFromURL(plats)
+      utils.getDataFromURL(plats)
         .then(function (body) {
           if (body.StatusCode !== 0) {
             channel.send('Något gick snett');
@@ -158,7 +109,7 @@ exports.service = function () {
 
           real = real.replace('{key}', keyReal).replace('{id}', id);
 
-          getDataFromURL(real)
+          utils.getDataFromURL(real)
             .then(function (body) {
 
             var metros = body.ResponseData.Metros;
@@ -171,7 +122,6 @@ exports.service = function () {
             channel.send('*' + name + '*\n' + departures.join('\n'));
           });          
         });
-      });
     }
   }
 };

@@ -43,7 +43,7 @@ describe('#BotService', function() {
         expect(bot.service().fml).to.be.a('function');
       });
 
-      it('should call request with correct url', function() {
+      xit('should call request with correct url', function() {
         var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
           
         bot.service().fml('fml', {});
