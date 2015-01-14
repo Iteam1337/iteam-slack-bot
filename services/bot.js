@@ -2,6 +2,7 @@
 
 var LastFm  = require('./lastfm');
 var request = require('request');
+var Q       = require('q');
 
 /**
  * Displays the help text
@@ -24,8 +25,30 @@ function showHelp (channel) {
   channel.send(text.join('\n'));
 }
 
+/**
+ * Returns a random object from an array
+ * @param  {array} array - Array
+ * @return {obj, string} - Returns random from array
+ */
 function returnRandom (array) {
-  return array[Math.floor(Math.random() * array.length)];
+  return array[ Math.floor( Math.random() * array.length ) ];
+}
+
+/**
+ * Get data from a given URL
+ * @param  {string} url - URL to get data from
+ * @return {obj} - Promise
+ */
+function getDataFromURL (url) {
+  var deferred = Q.defer();
+
+  request(url, function (error, response, body) {
+    body = JSON.parse(body);
+
+    deferred.resolve(body);
+  });
+
+  return deferred.promise;
 }
 
 exports.service = function () {
@@ -33,15 +56,12 @@ exports.service = function () {
     '9gag': function (text, channel) {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
-      request(url, function (error, response, body) {
-        if (!error && body) {
-          body = JSON.parse(body);
-
-          var randomGag = returnRandom(body.data);
+      getDataFromURL(url)
+        .then(function (data) {
+          var randomGag = returnRandom(data.data);
 
           channel.send(randomGag.caption + '\n' + randomGag.images.large);
-        }
-      });
+        });
     },
 
     /**
@@ -53,15 +73,13 @@ exports.service = function () {
     fml: function (text, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
 
-      request(url, function (error, data, body) {
-        body = JSON.parse(body);
+      getDataFromURL(url)
+        .then(function (fmls) {
+          var randomFml = returnRandom(fmls.responseData.feed.entries);
+          var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
 
-        var fmls = body.responseData.feed.entries;
-        var randomFml = returnRandom(fmls);
-        var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
-
-        channel.send(fml);
-      });
+          channel.send(fml);
+        });
     },
 
     /**
@@ -123,33 +141,35 @@ exports.service = function () {
       plats = plats.replace('{key}', keyPlats).replace('{search}', station);
 
       request(plats, function (error, response, body) {
-        body = JSON.parse(body);
+      getDataFromURL(plats)
+        .then(function (body) {
+          if (body.StatusCode !== 0) {
+            channel.send('Något gick snett');
+            return;
+          }
 
-        if (body.StatusCode !== 0) {
-          channel.send('Något gick snett');
-          return;
-        }
+          if (!body.ResponseData[0]) {
+            channel.send('Kan inte hitta någon station med namnet *' + station);
+            return;
+          }
 
-        if (!body.ResponseData[0]) {
-          channel.send('Kan inte hitta någon station med namnet *' + station);
-          return;
-        }
+          var name = body.ResponseData[0].Name;
+          var id = body.ResponseData[0].SiteId;
 
-        var name = body.ResponseData[0].Name;
-        var id = body.ResponseData[0].SiteId;
+          real = real.replace('{key}', keyReal).replace('{id}', id);
 
-        real = real.replace('{key}', keyReal).replace('{id}', id);
+          getDataFromURL(real)
+            .then(function (body) {
 
-        request(real, function (error, response, body) {
-          body = JSON.parse(body);
-          var metros = body.ResponseData.Metros;
-          var departures = [];
+            var metros = body.ResponseData.Metros;
+            var departures = [];
 
-          metros.forEach(function (metro) {
-            departures.push('*' + metro.LineNumber + ' ' + metro.Destination + '*\n' + metro.DisplayTime);
-          });
+            metros.forEach(function (metro) {
+              departures.push('*' + metro.LineNumber + ' ' + metro.Destination + '*\n' + metro.DisplayTime);
+            });
 
-          channel.send('*' + name + '*\n' + departures.join('\n'));
+            channel.send('*' + name + '*\n' + departures.join('\n'));
+          });          
         });
       });
     }
