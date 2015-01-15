@@ -10,9 +10,11 @@ exports.service = function () {
 
       utils.getDataFromURL(url)
         .then(function (data) {
-          var randomGag = utils.returnRandom(data.data);
+          if (data && data.data) {
+            var randomGag = utils.returnRandom(data.data);
 
-          channel.send(randomGag.caption + '\n' + randomGag.images.large);
+            channel.send(randomGag.caption + '\n' + randomGag.images.large);
+          }
         });
     },
 
