@@ -42,9 +42,13 @@ function getDataFromURL (url) {
   var deferred = Q.defer();
 
   request(url, function (error, response, body) {
-    body = JSON.parse(body);
+    if (!error && body) {
+      if (typeof body === 'string') {
+        body = JSON.parse(body);
+      }
 
-    deferred.resolve(body);
+      deferred.resolve(body);
+    }
   });
 
   return deferred.promise;
