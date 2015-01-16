@@ -1,3 +1,5 @@
+'use strict';
+
 var Slack  = require('slack-client');
 var Bot    = require('./services/bot');
 

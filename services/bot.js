@@ -5,6 +5,11 @@ var utils  = require('../utilities/utils');
 
 exports.service = function () {
   return {
+    /**
+     * Display a random image from 9gag's hot list
+     * @param  {array} commands - Array of commands
+     * @param  {object} channel - Channel object
+     */
     '9gag': function (commands, channel) {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
@@ -24,7 +29,7 @@ exports.service = function () {
     /**
      * Display a random FML from fmylife.com
      * @param  {array} commands - Array of commands
-     * @param  {obj} channel - Channel object
+     * @param  {object} channel - Channel object
      */
     fml: function (commands, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
@@ -35,20 +40,29 @@ exports.service = function () {
           var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';
 
           channel.send(fml);
+        })
+        .catch(function (error) {
+          console.log(error);
         });
     },
 
     /**
      * Display help
-     * @param  {string} commands    [description]
-     * @param  {[type]} channel [description]
-     * @return {[type]}         [description]
+     * @param  {array} commands - Array of commands
+     * @param  {object} channel - Channel object
      */
     help: function (commands, channel) {
       utils.showHelp(channel)
     },
 
-    hej: function (text, channel, user, slack) {
+    /**
+     * Displays a little hello message with the users real name
+     * @param  {array} commands - Array of commands
+     * @param  {object} channel - Channel object
+     * @param  {string} user - User ID
+     * @param  {object} slack - Slack
+     */
+    hej: function (commands, channel, user, slack) {
       user = slack.getUserByID(user);
 
       channel.send('Hej, ' + user.profile.first_name + '!');
@@ -56,9 +70,8 @@ exports.service = function () {
 
     /**
      * Display help
-     * @param  {string} commands    [description]
-     * @param  {[type]} channel [description]
-     * @return {[type]}         [description]
+     * @param  {array} commands - Array of commands
+     * @param  {object} channel - Channel object
      */
     hjälp: function (commands, channel) {
       utils.showHelp(channel)
@@ -67,8 +80,7 @@ exports.service = function () {
     /**
      * Display now playing
      * @param  {string} commands    [description]
-     * @param  {[type]} channel [description]
-     * @return {[type]}         [description]
+     * @param  {object} channel - Channel object
      */
     np: function (commands, channel) {
       LastFm
@@ -80,9 +92,8 @@ exports.service = function () {
 
     /**
      * Display SL departure times
-     * @param  {[type]} text    [description]
-     * @param  {[type]} channel [description]
-     * @return {[type]}         [description]
+     * @param  {array} commands - Array of commands
+     * @param  {object} channel - Channel object
      */
     sl: function (commands, channel) {
       console.log(commands);
