@@ -2,8 +2,6 @@
 
 var LastFm = require('./lastfm');
 var utils  = require('../utilities/utils');
-var moment  = require('moment');
-require('moment-duration-format');
 
 exports.service = function () {
   return {
