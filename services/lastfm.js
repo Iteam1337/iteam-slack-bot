@@ -25,29 +25,16 @@ function prepareResponse (lastfm) {
 }
 
 /**
- * Prepare request URL
- * Should call with iteam1337 if no user name is provided
- * 
- * @param  {obj} body - Request body from POST
- * @return {string} - URL for Last.fm request
- */
-function prepareUser (text) {
-  text = text.replace('<@U03AW9QEV>:', '');
-  var user = text.split(':')[1] ? text.split(':')[1].trim().split(' ')[0] : 'iteam1337';
-  return user;
-}
-
-/**
  * Send request with correct username to Last.fm
  * @param  {text} text - Message from Slack
  * @return {obj}       - Promise
  */
-exports.getLastfm = function (text) {
+exports.getLastfm = function (commands) {
   var deferred = Q.defer();
 
   // Last.fm params
   var lastfm = {
-    user: prepareUser(text),
+    user: commands[2],
     limit: 1
   };
 
