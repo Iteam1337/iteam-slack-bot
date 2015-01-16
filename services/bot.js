@@ -1,7 +1,7 @@
 'use strict';
 
 var LastFm = require('./lastfm');
-var SL = require('./sl');
+var SL     = require('./sl');
 var utils  = require('../utilities/utils');
 
 exports.service = function () {
