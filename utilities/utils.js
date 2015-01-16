@@ -59,6 +59,11 @@ function getDataFromURL (url) {
   return deferred.promise;
 }
 
+/**
+ * Takes minutes and returns a more readable string
+ * @param minutes
+ * @returns {string} - Humanized string
+ */
 function calculateTimeFromMinutes (minutes) {
   if (minutes < 60) {
     return minutes > 1 ? minutes + ' minuter' : minutes + ' minut';
