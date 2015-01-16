@@ -3,6 +3,7 @@
 var LastFm = require('./lastfm');
 var SL     = require('./sl');
 var utils  = require('../utilities/utils');
+var flip = require('flip-text');
 
 exports.service = function () {
   return {
@@ -25,6 +26,16 @@ exports.service = function () {
         .catch(function (error) {
           console.log(error);
         });
+    },
+
+    flip: function (commands, channel, user, slack) {
+      var guy = '(╯°□°）╯︵ ';
+      var flipped;
+      user = slack.getUserByID(user);
+
+      flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
+
+      channel.send(guy + flipped);
     },
 
     /**
@@ -91,6 +102,16 @@ exports.service = function () {
         });
     },
 
+    rage: function (commands, channel, user, slack) {
+      var guy = '(ノಠ益ಠ)ノ彡 ';
+      var flipped;
+      user = slack.getUserByID(user);
+
+      flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
+
+      channel.send(guy + flipped);
+    },
+
     /**
      * Display SL departure times
      * @param  {array} commands - Array of commands
@@ -102,6 +123,16 @@ exports.service = function () {
       } else {
         SL.realtidsinformation(commands, channel);
       }
+    },
+
+    unflip: function (commands, channel, user, slack) {
+      var guy = ' ノ( º _ ºノ)';
+      var flipped;
+      user = slack.getUserByID(user);
+
+      flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? user.profile.first_name.toLowerCase() : commands[1].toLowerCase();
+
+      channel.send(flipped + guy);
     }
   }
 };

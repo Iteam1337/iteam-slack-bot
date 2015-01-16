@@ -13,13 +13,14 @@ function showHelp (channel) {
     '@iteam [alternativ]\n',
     'Alternativ:',
     '9gag                       slumpa en bild från 9gags hot-lista',
+    'flip me/{namn}             släng dig själv eller något annat',
     'fml                        slumpa en FML från fmylife.com',
     'help/hjälp                 visar denna hjälp',
-    'np                         visar vilken låt som spelas',
-    'np {användarnamn}          visar vilken låt du spelar (Last.fm-användarnamn)',
-    'sl                         visar närmaste avgångarna från Rådmansgatan',
-    'sl {station}               visar närmaste avgångarna från angiven station',
-    'sl {station-a} {station-b} visar närmast i tid resa mellan a och b```'
+    'np {användarnamn}          visar vilken låt du spelar (Last.fm-användarnamn). Default: iteam1337',
+    'rage me/{namn}             rage:a på dig själv eller något annat',
+    'sl {station}               visar närmaste avgångarna från angiven station. Default: Rådmansgatan',
+    'sl {station-a} {station-b} visar närmast i tid resa mellan a och b',
+    'unflip me/{namn}           ställ tillbaka dig själv eller något annat```'
   ];
 
   channel.send(text.join('\n'));
