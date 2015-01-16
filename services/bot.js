@@ -5,7 +5,7 @@ var utils  = require('../utilities/utils');
 
 exports.service = function () {
   return {
-    '9gag': function (text, channel) {
+    '9gag': function (commands, channel) {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
       utils.getDataFromURL(url)
@@ -15,16 +15,18 @@ exports.service = function () {
 
             channel.send(randomGag.caption + '\n' + randomGag.images.large);
           }
+        })
+        .catch(function (error) {
+          console.log(error);
         });
     },
 
     /**
      * Display a random FML from fmylife.com
-     * @param  {string} text    [description]
-     * @param  {[type]} channel [description]
-     * @return {[type]}         [description]
+     * @param  {array} commands - Array of commands
+     * @param  {obj} channel - Channel object
      */
-    fml: function (text, channel) {
+    fml: function (commands, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
 
       utils.getDataFromURL(url)
@@ -38,11 +40,11 @@ exports.service = function () {
 
     /**
      * Display help
-     * @param  {string} text    [description]
+     * @param  {string} commands    [description]
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
-    help: function (text, channel) {
+    help: function (commands, channel) {
       utils.showHelp(channel)
     },
 
@@ -54,23 +56,23 @@ exports.service = function () {
 
     /**
      * Display help
-     * @param  {string} text    [description]
+     * @param  {string} commands    [description]
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
-    hjälp: function (text, channel) {
+    hjälp: function (commands, channel) {
       utils.showHelp(channel)
     },
 
     /**
      * Display now playing
-     * @param  {string} text    [description]
+     * @param  {string} commands    [description]
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
-    np: function (text, channel) {
+    np: function (commands, channel) {
       LastFm
-        .getLastfm(text)
+        .getLastfm(commands)
         .then(function (data) {
           channel.send(data);
         });
@@ -82,12 +84,13 @@ exports.service = function () {
      * @param  {[type]} channel [description]
      * @return {[type]}         [description]
      */
-    sl: function (text, channel) {
+    sl: function (commands, channel) {
+      console.log(commands);
+
       var baseUrl = 'http://api.sl.se/api2/';
       var plats = baseUrl + 'typeahead.json?key={key}&searchstring={search}&stationsonly=true&maxresults=1';
       var real = baseUrl + 'realtimedepartures.json?key={key}&siteid={id}'
-      var match = text.match(/sl\s[a-zåäö-]*/i);
-      var station = match ? match[0].substr(3) : 'Rådmansgatan';
+      var station = commands[2] ? commands[2] : 'Rådmansgatan';
       
       var keyPlats = process.env.SL_PLATS;
       var keyReal = process.env.SL_REAL;

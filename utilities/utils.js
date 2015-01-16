@@ -16,7 +16,7 @@ function showHelp (channel) {
     'fml                slumpa en FML från fmylife.com',
     'help/hjälp         visar denna hjälp',
     'np                 visar vilken låt som spelas',
-    'np:{användarnamn}  visar vilken låt du spelar (Last.fm-användarnamn)',
+    'np {användarnamn}  visar vilken låt du spelar (Last.fm-användarnamn)',
     'sl                 visar närmaste avgångarna från Rådmansgatan',
     'sl {station}       visar närmaste avgångarna från angiven station```'
   ];
@@ -42,7 +42,11 @@ function getDataFromURL (url) {
   var deferred = Q.defer();
 
   request(url, function (error, response, body) {
-    if (!error && body) {
+    if (error) {
+      deferred.reject(error);
+    }
+
+    if (body) {
       if (typeof body === 'string') {
         body = JSON.parse(body);
       }

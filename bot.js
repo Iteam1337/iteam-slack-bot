@@ -43,18 +43,20 @@ slack.on('message', function (message) {
 	var botID   = '<@U03AW9QEV>';
 
 	// Do nothing if there is no text
-	if (!text) {
+	if (!text || text.substr(0,12) !== botID) {
 		return;
 	}
 
-	var command = text.substr(0,12) === botID && text.length > 12 ? text.match(/\s[a-zåäö0-9]*/i) : '';
+	// Split the message on spaces and remove the first on (the bot name)
+	var commands = text.split(' ').slice(1);
 
-	if (command) {
-		command = command[0].trim();
+	// The command is the first array value
+	if (commands.length) {
+		var command = commands[0];
 	}
 
 	// Show help
-	if (text === botID) {
+	if (text === botID || text === botID + ':') {
 		Bot.service().help(text, channel);
 		return;
 	}
@@ -62,7 +64,7 @@ slack.on('message', function (message) {
 	// If message with command
 	if (type === 'message' && command) {
 		if (Bot.service()[command]) {
-			Bot.service()[command](text, channel, user, slack);
+			Bot.service()[command](commands, channel, user, slack);
 		} else {
 			Bot.service().help(text, channel);
 		}
