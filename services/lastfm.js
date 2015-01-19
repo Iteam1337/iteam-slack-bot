@@ -34,7 +34,7 @@ exports.getLastfm = function (commands) {
 
   // Last.fm params
   var lastfm = {
-    user: commands[1],
+    user: commands[1] || 'iteam1337',
     limit: 1
   };
 
