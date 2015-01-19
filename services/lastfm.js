@@ -34,7 +34,7 @@ exports.getLastfm = function (commands) {
 
   // Last.fm params
   var lastfm = {
-    user: commands[2],
+    user: commands[1],
     limit: 1
   };
 
