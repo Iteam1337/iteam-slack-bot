@@ -40,6 +40,7 @@ describe('/Utilities', function() {
         '@iteam [alternativ]\n',
         'Alternativ:',
         '9gag                       slumpa en bild från 9gags hot-lista',
+        'beer [namn]                namn på öl (obligatorisk)',
         'excuse {typ}               developer/programmer. Default: slumpvald',
         'flip me/{namn}             släng dig själv eller något annat',
         'fml                        slumpa en FML från fmylife.com',
