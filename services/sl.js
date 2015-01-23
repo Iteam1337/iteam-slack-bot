@@ -2,10 +2,10 @@
 
 var utils  = require('../utilities/utils');
 
-var baseUrl = 'http://api.sl.se/api2/';
+var baseUrl  = 'http://api.sl.se/api2/';
 var keyPlats = process.env.SL_PLATS;
-var keyReal = process.env.SL_REAL;
-var keyRese = process.env.SL_RESE;
+var keyReal  = process.env.SL_REAL;
+var keyRese  = process.env.SL_RESE;
 
 /**
  * Takes two station names and calculates a trip between them

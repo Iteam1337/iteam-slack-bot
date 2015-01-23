@@ -5,7 +5,7 @@ var proxyquire = require('proxyquire');
 
 chai.use(require('sinon-chai'));
 
-describe('#BotService', function() {
+describe('/BotService', function() {
   var bot;
   var lastfm;
   var request;
@@ -29,7 +29,7 @@ describe('#BotService', function() {
     });
   });
 
-  describe('/Service', function() {
+  describe('#Service', function() {
     it('should be a function', function() {
       expect(bot.service).to.be.a('function');
     });

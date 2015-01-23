@@ -29,7 +29,7 @@ gulp.task('nodemon', function () {
 // Watch and task runners
 // --------------------------------------------------
 gulp.task('watch', function () {
-  gulp.watch(['bot.js', 'services/**/*.js','test/**/*.js'], [
+  gulp.watch(['bot.js', 'utilities/**/*.js', 'services/**/*.js','test/**/*.js'], [
     'test']);
 });
 

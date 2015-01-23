@@ -72,12 +72,11 @@ function calculateTimeFromMinutes (minutes) {
     return '1 timme';
   } else if (minutes > 60) {
     var hours = Math.floor(minutes / 60);
-    var minutes = Math.floor(minutes / 60 % 1 * 60);
+    var minutes = Math.round(minutes / 60 % 1 * 60);
     minutes = minutes === 1 ? minutes + ' minut' : minutes + ' minuter';
     return hours === 1 ? hours + ' timme ' + minutes : hours + ' timmar ' + minutes;
   }
 }
-
 
 module.exports = {
   showHelp: showHelp,
