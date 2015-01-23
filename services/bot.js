@@ -1,10 +1,11 @@
 'use strict';
 
 var LastFm = require('./lastfm');
+var error  = require('./error');
 var SL     = require('./sl');
 var utils  = require('../utilities/utils');
 var flip   = require('flip-text');
-var jsdom = require("jsdom");
+var jsdom  = require("jsdom");
 
 
 exports.service = function () {
@@ -35,6 +36,11 @@ exports.service = function () {
       var url = 'http://api.brewerydb.com/v2/search?q={q}&key={key}&type=beer';
 
       url = url.replace('{key}', beerKey).replace('{q}', commands[1]);
+
+      if (!beerKey) {
+        error.log('No API key for BreweryDb');
+        return;
+      }
 
       utils.getDataFromURL(url)
         .then(function (beers) {

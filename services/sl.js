@@ -1,6 +1,7 @@
 'use strict';
 
-var utils  = require('../utilities/utils');
+var utils = require('../utilities/utils');
+var error = require('./error');
 
 var baseUrl  = 'http://api.sl.se/api2/';
 var keyPlats = process.env.SL_PLATS;
@@ -13,6 +14,10 @@ var keyRese  = process.env.SL_RESE;
  * @param channel
  */
 function reseplaneraren (commands, channel) {
+  if (!keyRese) {
+    error.log('No API key for Trafiklab Reseplanerare 2');
+  }
+
   var rese = baseUrl + 'TravelplannerV2/trip.json?key={key}&originId={origin}&destId={destination}';
   rese = rese.replace('{key}', keyRese);
   rese = rese.replace('{origin}', commands[1]);
@@ -49,6 +54,14 @@ function reseplaneraren (commands, channel) {
  * @param channel
  */
 function realtidsinformation (commands, channel) {
+  if (!keyPlats) {
+    error.log('No API key for Trafiklab Platsuppslag');
+  }
+
+  if (!keyReal) {
+    error.log('No API key for Trafiklab Realtidsinformation 3');
+  }
+
   var plats = baseUrl + 'typeahead.json?key={key}&searchstring={search}&stationsonly=true&maxresults=1';
   var real = baseUrl + 'realtimedepartures.json?key={key}&siteid={id}';
 
