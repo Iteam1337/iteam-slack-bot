@@ -13,7 +13,7 @@ var lfm = new LastfmAPI({
 /**
  * Prepare response object
  * @param  {string} body - Last.fm API data
- * @return {obj} - Response object prepared for Slack
+ * @return {object} - Response object prepared for Slack
  */
 function prepareResponse (lastfm) {
   var track      = lastfm.track[0] || lastfm.track;
@@ -27,7 +27,7 @@ function prepareResponse (lastfm) {
 /**
  * Send request with correct username to Last.fm
  * @param  {text} text - Message from Slack
- * @return {obj}       - Promise
+ * @return {object}       - Promise
  */
 exports.getLastfm = function (commands) {
   var deferred = Q.defer();

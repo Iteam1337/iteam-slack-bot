@@ -2,6 +2,13 @@
 
 var flip   = require('flip-text');
 
+/**
+ * Flip, rage or unflip
+ * @param  {array} commands - Array of commands
+ * @param  {string} user - User ID
+ * @param  {object} slack - Slack
+ * @return {string} - Prepared string
+ */
 function doFlip (commands, user, slack) {
   var flips = {
     flip: '(╯°□°）╯︵ ',
