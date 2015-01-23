@@ -50,7 +50,12 @@ slack.on('message', function (message) {
 	}
 
 	// Split the message on spaces and remove the first on (the bot name)
-	var commands = text.split(' ').slice(1);
+	var command = text.split(' ').slice(1)[0];
+	var param = text.indexOf('"') > -1 ? text.match(/"(.*)"/)[0].replace(/"/g, '') : text.split(' ').slice(2);
+
+	var commands = [ command, param ];
+
+	console.log('Called with params: ' + commands);
 
 	// The command is the first array value
 	if (commands.length) {

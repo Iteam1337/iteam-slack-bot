@@ -4,8 +4,6 @@ var LastFm = require('./lastfm');
 var SL     = require('./sl');
 var utils  = require('../utilities/utils');
 var flip   = require('flip-text');
-var cheerio = require('cheerio');
-// Count all of the links from the Node.js build page
 var jsdom = require("jsdom");
 
 
@@ -30,6 +28,21 @@ exports.service = function () {
         .catch(function (error) {
           console.log(error);
         });
+    },
+
+    beer: function (commands, channel) {
+      var beerKey = process.env.BEER_KEY;
+      var url = 'http://api.brewerydb.com/v2/search?q={q}&key={key}&type=beer';
+
+      url = url.replace('{key}', beerKey).replace('{q}', commands[1]);
+
+      utils.getDataFromURL(url)
+        .then(function (beers) {
+          var beer = beers.data[0];
+          var desc = beer.desc || '';
+
+          channel.send('*' + beer.name + '*\n_' + beer.style.name + ' - ' + beer.abv + '% - ' + beer.glass.name + '_\n' + desc);
+        })
     },
 
     excuse: function (commands, channel) {

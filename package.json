@@ -15,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^1.10.0",
-    "cheerio": "^0.18.0",
     "flip-text": "^1.0.0",
     "gulp": "^3.8.10",
     "gulp-mocha": "^2.0.0",
