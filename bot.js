@@ -62,7 +62,7 @@ slack.on('message', function (message) {
 		});
 	}
 
-	console.log('Called with params: ' + commands);
+	console.log('Called with command ' + commands[0] + ' and params ' + commands.slice(1) + ' @ ' + new Date());
 
 	// The command is the first array value
 	if (commands.length) {

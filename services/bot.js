@@ -100,7 +100,7 @@ exports.service = function () {
           channel.send(fml);
         })
         .catch(function (error) {
-          console.log(error);
+          error.log('FML - ' + error);
         });
     },
 
