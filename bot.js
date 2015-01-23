@@ -51,9 +51,16 @@ slack.on('message', function (message) {
 
 	// Split the message on spaces and remove the first on (the bot name)
 	var command = text.split(' ').slice(1)[0];
-	var param = text.indexOf('"') > -1 ? text.match(/"(.*)"/)[0].replace(/"/g, '') : text.split(' ').slice(2);
+	var commands = [ command ];
 
-	var commands = [ command, param ];
+	var regex = /"(?:[^"\\]|\\.)*"/g; // all inside quotation marks
+	var params = text.indexOf('"') > -1 ? text.match(regex) : text.split(' ').slice(2);
+
+	if (params.length) {
+		params.forEach(function (param) {
+			commands.push(param.replace(/"/g,''));
+		});
+	}
 
 	console.log('Called with params: ' + commands);
 

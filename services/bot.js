@@ -75,6 +75,7 @@ exports.service = function () {
       var guy = '(╯°□°）╯︵ ';
       var flipped;
       user = slack.getUserByID(user);
+      console.log(commands[1]);
 
       flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
 
