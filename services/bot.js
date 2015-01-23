@@ -1,10 +1,10 @@
 'use strict';
 
 var LastFm = require('./lastfm');
+var Flip   = require('./flip');
 var error  = require('./error');
 var SL     = require('./sl');
 var utils  = require('../utilities/utils');
-var flip   = require('flip-text');
 var jsdom  = require("jsdom");
 
 
@@ -80,13 +80,8 @@ exports.service = function () {
     },
 
     flip: function (commands, channel, user, slack) {
-      var guy = '(╯°□°）╯︵ ';
-      var flipped;
-      user = slack.getUserByID(user);
-
-      flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
-
-      channel.send(guy + flipped);
+      var flip = Flip.doFlip(commands, user, slack);
+      channel.send(flip);
     },
 
     /**
@@ -154,13 +149,8 @@ exports.service = function () {
     },
 
     rage: function (commands, channel, user, slack) {
-      var guy = '(ノಠ益ಠ)ノ彡 ';
-      var flipped;
-      user = slack.getUserByID(user);
-
-      flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
-
-      channel.send(guy + flipped);
+      var rage = Flip.doFlip(commands, user, slack);
+      channel.send(rage);
     },
 
     /**
@@ -177,13 +167,8 @@ exports.service = function () {
     },
 
     unflip: function (commands, channel, user, slack) {
-      var guy = ' ノ( º _ ºノ)';
-      var flipped;
-      user = slack.getUserByID(user);
-
-      flipped = !commands[1] ? '┻━┻' : commands[1] === 'me' ? user.profile.first_name.toLowerCase() : commands[1].toLowerCase();
-
-      channel.send(flipped + guy);
+      var unflip = flip.doFlip(commands, user, slack);
+      channel.send(unflip);
     }
   }
 };

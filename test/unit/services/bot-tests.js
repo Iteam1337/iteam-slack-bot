@@ -7,6 +7,7 @@ chai.use(require('sinon-chai'));
 
 describe('/BotService', function() {
   var bot;
+  var flip;
   var lastfm;
   var request;
   var slack;
@@ -17,6 +18,10 @@ describe('/BotService', function() {
       getLastfm: sinon.spy()
     };
 
+    flip = { 
+      doFlip: sinon.spy()
+    };
+
     request = sinon.stub();
 
     channel = {
@@ -25,7 +30,8 @@ describe('/BotService', function() {
 
     bot = proxyquire(process.cwd() + '/services/bot', {
       'request': request,
-      './lastfm': lastfm
+      './lastfm': lastfm,
+      './flip': flip
     });
   });
 
