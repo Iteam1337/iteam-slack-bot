@@ -7,14 +7,18 @@ var SL     = require('./sl');
 var utils  = require('../utilities/utils');
 var jsdom  = require("jsdom");
 
-
+/**
+ * Used as params for all calls.
+ * All services don't need all of them.
+ * 
+ * @param  {array} commands - Array of commands
+ * @param  {object} channel - Channel object
+ * @param  {string} user - User ID
+ * @param  {object} slack - Slack
+ */
 exports.service = function () {
   return {
-    /**
-     * Display a random image from 9gag's hot list
-     * @param  {array} commands - Array of commands
-     * @param  {object} channel - Channel object
-     */
+    // Display a random image from 9gag's hot list
     '9gag': function (commands, channel) {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
@@ -31,6 +35,7 @@ exports.service = function () {
         });
     },
 
+    // Beer from BreweryDb
     beer: function (commands, channel) {
       var beerKey = process.env.BEER_KEY;
       var url = 'http://api.brewerydb.com/v2/search?q={q}&key={key}&type=beer';
@@ -53,6 +58,7 @@ exports.service = function () {
         })
     },
 
+    // Excuse
     excuse: function (commands, channel) {
       var excuses = {
         programmer: {
@@ -79,16 +85,13 @@ exports.service = function () {
       );
     },
 
+    // Flip
     flip: function (commands, channel, user, slack) {
       var flip = Flip.doFlip(commands, user, slack);
       channel.send(flip);
     },
 
-    /**
-     * Display a random FML from fmylife.com
-     * @param  {array} commands - Array of commands
-     * @param  {object} channel - Channel object
-     */
+    // A random FML from fmylife.com
     fml: function (commands, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
 
@@ -104,42 +107,24 @@ exports.service = function () {
         });
     },
 
-    /**
-     * Display help
-     * @param  {array} commands - Array of commands
-     * @param  {object} channel - Channel object
-     */
+    // Help
     help: function (commands, channel) {
       utils.showHelp(channel)
     },
 
-    /**
-     * Displays a little hello message with the users real name
-     * @param  {array} commands - Array of commands
-     * @param  {object} channel - Channel object
-     * @param  {string} user - User ID
-     * @param  {object} slack - Slack
-     */
+    // A little hello message with the users real name
     hej: function (commands, channel, user, slack) {
       user = slack.getUserByID(user);
 
       channel.send('Hej, ' + user.profile.first_name + '!');
     },
 
-    /**
-     * Display help
-     * @param  {array} commands - Array of commands
-     * @param  {object} channel - Channel object
-     */
+    // Help
     hjälp: function (commands, channel) {
       utils.showHelp(channel)
     },
 
-    /**
-     * Display now playing
-     * @param  {string} commands    [description]
-     * @param  {object} channel - Channel object
-     */
+    // Display now playing
     np: function (commands, channel) {
       LastFm
         .getLastfm(commands)
@@ -148,16 +133,13 @@ exports.service = function () {
         });
     },
 
+    // Rage flip
     rage: function (commands, channel, user, slack) {
       var rage = Flip.doFlip(commands, user, slack);
       channel.send(rage);
     },
 
-    /**
-     * Display SL departure times
-     * @param  {array} commands - Array of commands
-     * @param  {object} channel - Channel object
-     */
+    // SL departure times
     sl: function (commands, channel) {
       if (commands.length > 2) {
         SL.reseplaneraren(commands, channel);
