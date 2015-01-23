@@ -12,6 +12,8 @@ describe('/BotService', function() {
   var request;
   var slack;
   var channel;
+  var utils;
+  var error;
 
   beforeEach(function () {
     lastfm = {
@@ -19,7 +21,7 @@ describe('/BotService', function() {
     };
 
     flip = { 
-      doFlip: sinon.spy()
+      doFlip: sinon.stub().returns('flippy')
     };
 
     request = sinon.stub();
@@ -28,10 +30,25 @@ describe('/BotService', function() {
       send: sinon.spy()
     };
 
+    utils = {
+      getDataFromURL: sinon.stub().returns({
+        then: sinon.stub().returns({
+          catch: sinon.spy()
+        })
+      }),
+      showHelp: sinon.spy()
+    };
+
+    error = {
+      log: sinon.spy()
+    };
+
     bot = proxyquire(process.cwd() + '/services/bot', {
       'request': request,
       './lastfm': lastfm,
-      './flip': flip
+      './flip': flip,
+      '../utilities/utils': utils,
+      './error': error
     });
   });
 
@@ -42,6 +59,62 @@ describe('/BotService', function() {
 
     it('should return a object', function() {
       expect(bot.service()).to.be.an('object');
+    });
+
+    describe('9gag', function() {
+      it('should be a function', function() {
+        expect(bot.service()['9gag']).to.be.a('function');
+      });
+
+      it('should call API with correct url', function() {
+        bot.service()['9gag'](['9gag'], channel);
+
+        expect(utils.getDataFromURL).calledOnce.and.calledWith('http://infinigag.eu01.aws.af.cm/hot/0');
+      });
+    });
+
+    describe('#beer', function() {
+      it('should be a function', function() {
+        expect(bot.service().beer).to.be.a('function');
+      });
+
+      it('should log an error if no API key is set', function() {
+        bot.service().beer(['beer', 'Camden+IPA'], channel);
+
+        if (!process.env.BEER_KEY) {
+          expect(error.log).calledOnce.and.calledWith('No API key for BreweryDb');
+        }
+      });
+
+      it('should get data from BreweryDb API', function() {
+        bot.service().beer(['beer', 'Camden+IPA'], channel);
+
+        var url = 'http://api.brewerydb.com/v2/search?q={q}&key={key}&type=beer';
+        
+        expect(utils.getDataFromURL).calledOnce.and.calledWith(url.replace('{key}', process.env.BEER_KEY).replace('{q}', 'Camden+IPA'));
+      });
+    });
+
+    describe('#flip', function() {
+      it('should be a function', function() {
+        expect(bot.service().flip).to.be.a('function');
+      });
+
+      it('should send a call to flip service', function() {
+        bot.service().flip(['flip'], channel, 'test', {});
+
+        expect(flip.doFlip).calledOnce.and.calledWith(
+          ['flip'],
+          'test',
+          {}
+          );
+      });
+
+      it('should send flip message to channel', function() {
+       bot.service().flip(['flip'], channel, 'test', {});
+
+        expect(channel.send).calledOnce.and.calledWith('flippy');       
+      });
     });
 
     describe('#fml', function() {
@@ -66,7 +139,7 @@ describe('/BotService', function() {
       it('should call showHelp', function() {
         bot.service().help('help', channel);
 
-        expect(channel.send).calledOnce;
+        expect(utils.showHelp).calledOnce.and.calledWith(channel);
       });
     });
 
@@ -78,7 +151,7 @@ describe('/BotService', function() {
       it('should call showHelp', function() {
         bot.service().help('help', channel);
 
-        expect(channel.send).calledOnce;
+        expect(utils.showHelp).calledOnce.and.calledWith(channel);
       });
     });
 
@@ -88,9 +161,53 @@ describe('/BotService', function() {
       });
     });
 
+    describe('#rage', function() {
+      it('should be a function', function() {
+        expect(bot.service().rage).to.be.a('function');
+      });
+
+      it('should send a call to flip service', function() {
+        bot.service().rage(['rage'], channel, 'test', {});
+
+        expect(flip.doFlip).calledOnce.and.calledWith(
+          ['rage'],
+          'test',
+          {}
+          );
+      });
+
+      it('should send flip message to channel', function() {
+       bot.service().rage(['rage'], channel, 'test', {});
+
+        expect(channel.send).calledOnce.and.calledWith('flippy');       
+      });
+    });
+
     describe('#sl', function() {
       it('should be a function', function() {
         expect(bot.service().sl).to.be.a('function');
+      });
+    });
+
+    describe('#unflip', function() {
+      it('should be a function', function() {
+        expect(bot.service().unflip).to.be.a('function');
+      });
+
+      it('should send a call to flip service', function() {
+        bot.service().unflip(['unflip'], channel, 'test', {});
+
+        expect(flip.doFlip).calledOnce.and.calledWith(
+          ['unflip'],
+          'test',
+          {}
+          );
+      });
+
+      it('should send flip message to channel', function() {
+       bot.service().unflip(['unflip'], channel, 'test', {});
+
+        expect(channel.send).calledOnce.and.calledWith('flippy');       
       });
     });
   });

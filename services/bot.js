@@ -31,7 +31,7 @@ exports.service = function () {
           }
         })
         .catch(function (error) {
-          console.log(error);
+          error.log('9gag - ' + error);
         });
     },
 
@@ -46,7 +46,7 @@ exports.service = function () {
         error.log('No API key for BreweryDb');
         return;
       }
-
+      
       utils.getDataFromURL(url)
         .then(function (beers) {
           var beer = beers.data[0];
@@ -55,6 +55,9 @@ exports.service = function () {
           var glass = beer.glass ? ' - ' + beer.glass.name : '';
 
           channel.send('*' + beer.name + '*\n_' + beer.style.name + abv + glass + '_\n' + desc);
+        })
+        .catch(function (error) {
+          error.log('Beer - ' + error);
         })
     },
 
@@ -149,7 +152,7 @@ exports.service = function () {
     },
 
     unflip: function (commands, channel, user, slack) {
-      var unflip = flip.doFlip(commands, user, slack);
+      var unflip = Flip.doFlip(commands, user, slack);
       channel.send(unflip);
     }
   }
