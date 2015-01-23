@@ -13,6 +13,7 @@ function showHelp (channel) {
     '@iteam [alternativ]\n',
     'Alternativ:',
     '9gag                       slumpa en bild från 9gags hot-lista',
+    'excuse {typ}               developer/programmer. Default: slumpvald',
     'flip me/{namn}             släng dig själv eller något annat',
     'fml                        slumpa en FML från fmylife.com',
     'help/hjälp                 visar denna hjälp',
@@ -36,6 +37,16 @@ function returnRandom (array) {
 }
 
 /**
+ * Return a random property from an object
+ * @param  {object} object - Object
+ * @return {object, string} - Random property from object
+ */
+function randomProperty (object) {
+  var keys = Object.keys(object)
+  return object[keys[ keys.length * Math.random() << 0]];
+}
+
+/**
  * Get data from a given URL
  * @param  {string} url - URL to get data from
  * @return {obj} - Promise
@@ -49,7 +60,7 @@ function getDataFromURL (url) {
     }
 
     if (body) {
-      if (typeof body === 'string') {
+      if (typeof body === 'string' && body.indexOf('<') === -1) {
         body = JSON.parse(body);
       }
 
@@ -81,6 +92,7 @@ function calculateTimeFromMinutes (minutes) {
 module.exports = {
   showHelp: showHelp,
   returnRandom: returnRandom,
+  randomProperty: randomProperty,
   getDataFromURL: getDataFromURL,
   calculateTimeFromMinutes: calculateTimeFromMinutes
 };

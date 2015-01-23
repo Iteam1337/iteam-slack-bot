@@ -3,7 +3,11 @@
 var LastFm = require('./lastfm');
 var SL     = require('./sl');
 var utils  = require('../utilities/utils');
-var flip = require('flip-text');
+var flip   = require('flip-text');
+var cheerio = require('cheerio');
+// Count all of the links from the Node.js build page
+var jsdom = require("jsdom");
+
 
 exports.service = function () {
   return {
@@ -26,6 +30,32 @@ exports.service = function () {
         .catch(function (error) {
           console.log(error);
         });
+    },
+
+    excuse: function (commands, channel) {
+      var excuses = {
+        programmer: {
+          url: 'http://programmingexcuses.com/',
+          selector: '.wrapper a'
+        },
+        developer: {
+          url: 'http://developerexcuses.com/',
+          selector: '.wrapper a'
+        }
+      };
+
+      var excuse = commands[1] && excuses[commands[1]] ? excuses[commands[1]] : utils.randomProperty(excuses);
+
+      jsdom.env(
+        excuse.url,
+        function (errors, window) {
+          if (window) {
+            channel.send(window.document.querySelector(excuse.selector).textContent);
+
+            window.close();
+          }
+        }
+      );
     },
 
     flip: function (commands, channel, user, slack) {

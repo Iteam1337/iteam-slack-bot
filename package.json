@@ -15,10 +15,12 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^1.10.0",
+    "cheerio": "^0.18.0",
     "flip-text": "^1.0.0",
     "gulp": "^3.8.10",
     "gulp-mocha": "^2.0.0",
     "gulp-nodemon": "^1.0.5",
+    "jsdom": "^3.0.2",
     "lastfmapi": "0.0.5",
     "proxyquire": "^1.3.0",
     "q": "^1.1.2",
