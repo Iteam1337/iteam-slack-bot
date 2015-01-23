@@ -39,9 +39,11 @@ exports.service = function () {
       utils.getDataFromURL(url)
         .then(function (beers) {
           var beer = beers.data[0];
-          var desc = beer.desc || '';
+          var desc = beer.description || '';
+          var abv = beer.abv ? ' - ' + beer.abv + '%' : '';
+          var glass = beer.glass ? ' - ' + beer.glass.name : '';
 
-          channel.send('*' + beer.name + '*\n_' + beer.style.name + ' - ' + beer.abv + '% - ' + beer.glass.name + '_\n' + desc);
+          channel.send('*' + beer.name + '*\n_' + beer.style.name + abv + glass + '_\n' + desc);
         })
     },
 
