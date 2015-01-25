@@ -19,6 +19,7 @@ function showHelp (channel) {
     'fml                        slumpa en FML från fmylife.com',
     'help/hjälp                 visar denna hjälp',
     'np {användarnamn}          visar vilken låt du spelar (Last.fm-användarnamn). Default: iteam1337',
+    'number {nummer} {typ}      nummer kan vara ett tal eller ett datum (dd/mm). Default: random. Typ kan vara trivia, year, date eller math. Default: trivia för tal, date för ett datum.',
     'rage me/{namn}             rage:a på dig själv eller något annat',
     'sl {station}               visar närmaste avgångarna från angiven station. Default: Rådmansgatan',
     'sl {station-a} {station-b} visar närmast i tid resa mellan a och b',
