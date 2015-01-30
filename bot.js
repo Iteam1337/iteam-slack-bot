@@ -58,7 +58,7 @@ slack.on('message', function (message) {
 
 	if (params.length) {
 		params.forEach(function (param) {
-			commands.push(param.replace(/"/g,'').replace(' ', '+'));
+			commands.push(param.replace(/"/g,'').replace(/\s/g, '+'));
 		});
 	}
 

@@ -2,6 +2,7 @@
 
 var LastFm  = require('./lastfm');
 var Flip    = require('./flip');
+var tmdb    = require('./tmdb');
 var error   = require('./error');
 var Numbers = require('./numbers');
 var SL      = require('./sl');
@@ -126,6 +127,14 @@ exports.service = function () {
     // Help
     hjälp: function (commands, channel) {
       utils.showHelp(channel)
+    },
+
+    movie: function (commands, channel) {
+      tmdb
+        .get(commands)
+        .then(function (response) {
+          channel.send(response);
+        });
     },
 
     // Display now playing
