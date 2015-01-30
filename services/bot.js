@@ -2,11 +2,11 @@
 
 var LastFm  = require('./lastfm');
 var Flip    = require('./flip');
-var Numbers = require('./numbers');
 var error   = require('./error');
+var Numbers = require('./numbers');
 var SL      = require('./sl');
 var utils   = require('../utilities/utils');
-var jsdom   = require("jsdom");
+var jsdom   = require('jsdom');
 
 /**
  * Used as params for all calls.
@@ -138,27 +138,11 @@ exports.service = function () {
     },
 
     number: function (commands, channel) {
-      var url = 'http://numbersapi.com/{number}/{type}';
-
-      if (commands[1] && commands[1].indexOf('/') > -1) {
-        url = url.replace('{number}', commands[1].split('/').reverse().join('/'));
-        url = url.replace('{type}', 'date');
-      }
-
-      url = commands[1] ? url.replace('{number}', commands[1]) : url.replace('{number}', 'random');
-
-      url = commands[2] ? url.replace('{type}', commands[2]) : url.replace('{type}', '');
-
-      jsdom.env(
-        url,
-        function (errors, window) {
-          if (window) {
-            channel.send(window.document.body.textContent);
-
-            window.close();
-          }
-        }
-      );
+      Numbers
+        .get(commands)
+        .then(function (response) { 
+          channel.send(response);
+        });
     },
 
     // Rage flip
@@ -176,6 +160,7 @@ exports.service = function () {
       }
     },
 
+    // Unflip
     unflip: function (commands, channel, user, slack) {
       var unflip = Flip.doFlip(commands, user, slack);
       channel.send(unflip);

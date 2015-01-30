@@ -2,6 +2,7 @@ var chai       = require('chai');
 var expect     = chai.expect;
 var sinon      = require('sinon');
 var proxyquire = require('proxyquire');
+var q = require('q');
 
 chai.use(require('sinon-chai'));
 
@@ -15,10 +16,13 @@ describe('/BotService', function() {
   var channel;
   var utils;
   var error;
+  var deferred;
 
   beforeEach(function () {
+    deferred = q.defer();
+
     lastfm = {
-      getLastfm: sinon.spy()
+      getLastfm: sinon.stub().returns(deferred.promise)
     };
 
     flip = { 
@@ -165,35 +169,17 @@ describe('/BotService', function() {
       it('should be a function', function() {
         expect(bot.service().np).to.be.a('function');
       });
+
+      it('should call to get LastFm', function() {
+        bot.service().np(['np', 'hpbeliever']);
+
+        expect(lastfm.getLastfm).calledOnce.and.calledWith(['np', 'hpbeliever']);
+      });
     });
 
     describe('#number', function() {
       it('should be a function', function() {
         expect(bot.service().number).to.be.a('function');
-      });
-
-      it('should call jsdom with url for random number', function() {
-        bot.service().number(['number'], channel);
-
-        expect(jsdom.env).calledOnce.and.calledWith('http://numbersapi.com/random/');
-      });
-
-      it('should call jsdom with url for specific number', function() {
-        bot.service().number(['number', '42'], channel);
-
-        expect(jsdom.env).calledOnce.and.calledWith('http://numbersapi.com/42/');        
-      });
-
-      it('should call jsdom with url for specific type and number', function() {
-        bot.service().number(['number', '42', 'math'], channel);
-
-        expect(jsdom.env).calledOnce.and.calledWith('http://numbersapi.com/42/math');        
-      });
-
-      it('should call jsdom with url for a date', function() {
-        bot.service().number(['number', '4/2'], channel);
-
-        expect(jsdom.env).calledOnce.and.calledWith('http://numbersapi.com/2/4/date');        
       });
     });
 
