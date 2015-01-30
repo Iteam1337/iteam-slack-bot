@@ -8,8 +8,9 @@ function movie (data) {
   var genre = data.genres.length ? data.genres[0].name + ' - ' : '';
   var date = data.release_date ? data.release_date.substr(0,4) : ''
   var runtime = data.runtime ? ' - ' + utils.calculateTimeFromMinutes(data.runtime) : '';
+  var desc = data.overview ? data.overview : '';
 
-  return '*' + data.title + '*\n_' + genre + date + runtime  + '_\n' + data.overview;
+  return '*' + data.title + '*\n_' + genre + date + runtime  + '_\n' + desc;
 }
 
 exports.get = function (commands) {
