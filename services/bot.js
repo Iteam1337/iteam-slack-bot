@@ -5,6 +5,7 @@ var Flip    = require('./flip');
 var tmdb    = require('./tmdb');
 var error   = require('./error');
 var Numbers = require('./numbers');
+var chuck   = require('./chuck');
 var SL      = require('./sl');
 var utils   = require('../utilities/utils');
 var jsdom   = require('jsdom');
@@ -61,6 +62,14 @@ exports.service = function () {
         .catch(function (error) {
           error.log('Beer - ' + error);
         })
+    },
+
+    chuck: function (commands, channel) {
+      chuck
+        .get(commands)
+        .then(function (response) {
+          channel.send(response);
+        });
     },
 
     // Excuse

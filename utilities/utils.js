@@ -18,6 +18,7 @@ function showHelp (channel) {
     'flip me/{namn}             släng dig själv eller något annat',
     'fml                        slumpa en FML från fmylife.com',
     'help/hjälp                 visar denna hjälp',
+    'movie [titel]              titel kan vara namn, IMDb ID eller IMDb URL',
     'np {användarnamn}          visar vilken låt du spelar (Last.fm-användarnamn). Default: iteam1337',
     'number {nummer} {typ}      nummer kan vara ett tal eller ett datum (dd/mm). Default: random. Typ kan vara trivia, year, date eller math. Default: trivia för tal, date för ett datum.',
     'rage me/{namn}             rage:a på dig själv eller något annat',
