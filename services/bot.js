@@ -66,7 +66,7 @@ exports.service = function () {
 
     chuck: function (commands, channel) {
       chuck
-        .get(commands)
+        .get()
         .then(function (response) {
           channel.send(response);
         });

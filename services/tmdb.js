@@ -29,11 +29,15 @@ exports.get = function (commands) {
     });
   } else {
     mdb.searchMovie({ query: commands[1] }, function (error, response) {
-      var id = response.results[0].id;
+      if (response.results.length) {
+        var id = response.results[0].id;
 
-      mdb.movieInfo({ id: id }, function (errorInfo, responseInfo) {
-        deferred.resolve(movie(responseInfo));
-      });
+        mdb.movieInfo({ id: id }, function (errorInfo, responseInfo) {
+          deferred.resolve(movie(responseInfo));
+        });
+      } else {
+        deferred.resolve('Hittade ingen film med titeln *' + commands[1].replace(/\+/g, ' ') + '*');
+      }
     });
   }
 
