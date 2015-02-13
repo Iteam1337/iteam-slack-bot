@@ -4,6 +4,11 @@ var Slack  = require('slack-client');
 var Bot    = require('./services/bot');
 
 var token         = process.env.SLACK_TOKEN;
+
+if (process.env.CHATGANG) {
+	token = process.env.CHATGANG
+};
+
 var autoReconnect = true;
 var autoMark      = true;
 

@@ -4,11 +4,16 @@ var LastFm  = require('./lastfm');
 var Flip    = require('./flip');
 var tmdb    = require('./tmdb');
 var error   = require('./error');
+var country = require('./country');
 var Numbers = require('./numbers');
 var chuck   = require('./chuck');
 var SL      = require('./sl');
 var utils   = require('../utilities/utils');
 var jsdom   = require('jsdom');
+
+function sendToChannel (channel, text) {
+  channel.send(text.toString());
+}
 
 /**
  * Used as params for all calls.
@@ -69,6 +74,14 @@ exports.service = function () {
         .get()
         .then(function (response) {
           channel.send(response);
+        });
+    },
+
+    country: function (commands, channel) {
+      country
+        .get(commands)
+        .then(function (data) {
+          sendToChannel(channel, data);
         });
     },
 
