@@ -27,7 +27,7 @@ describe('/Utilities', function() {
     });
   });
 
-  describe('#showHelp', function() {
+  xdescribe('#showHelp', function() {
     it('should be a function', function() {
       expect(utils.showHelp).to.be.a('function');
     });

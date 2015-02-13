@@ -3,6 +3,8 @@
 var request = require('request');
 var Q       = require('q');
 
+var user = process.env.CHATGANG ? '@bob' : '@iteam';
+
 /**
  * Displays the help text
  * @param  {obj} channel - channel object
@@ -10,7 +12,7 @@ var Q       = require('q');
 function showHelp (channel) {
   var text = [
     '```Användning:',
-    '@iteam [alternativ]\n',
+    user + ' [alternativ]\n',
     'Alternativ:',
     '9gag                       slumpa en bild från 9gags hot-lista',
     'beer [namn]                namn på öl (obligatorisk)',
