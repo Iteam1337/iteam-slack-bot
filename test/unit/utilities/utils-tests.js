@@ -27,7 +27,7 @@ describe('/Utilities', function() {
     });
   });
 
-  xdescribe('#showHelp', function() {
+  describe('#showHelp', function() {
     it('should be a function', function() {
       expect(utils.showHelp).to.be.a('function');
     });
@@ -67,18 +67,6 @@ describe('/Utilities', function() {
 
     it('should return a random value from an array', function() {
       expect(utils.returnRandom([1,2,3])).to.be.above(0).and.below(4);
-    });
-  });
-
-  describe('#getDataFromURL', function() {
-    it('should be a function', function() {
-      expect(utils.getDataFromURL).to.be.a('function');
-    });
-
-    it('should call request with given url', function() {
-      utils.getDataFromURL('http://test.com');
-
-      expect(request).calledOnce.and.calledWith('http://test.com');
     });
   });
 

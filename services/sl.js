@@ -1,6 +1,6 @@
 'use strict';
 
-var utils = require('../utilities/utils');
+var utils = require('../utilities/Api');
 var error = require('./error');
 
 var baseUrl  = 'http://api.sl.se/api2/';
@@ -25,7 +25,7 @@ function reseplaneraren (commands, channel) {
 
   var trip = [];
 
-  utils.getDataFromURL(rese)
+  Api.get(rese)
     .then(function (body) {
       var firstTrip = body.TripList.Trip[0];
 
@@ -68,7 +68,7 @@ function realtidsinformation (commands, channel) {
   var station = commands[1] ? commands[1] : 'Rådmansgatan';
   plats = plats.replace('{key}', keyPlats).replace('{search}', station);
 
-  utils.getDataFromURL(plats)
+  Api.get(plats)
     .then(function (body) {
       if (body.StatusCode !== 0) {
         channel.send('Något gick snett');
@@ -85,7 +85,7 @@ function realtidsinformation (commands, channel) {
 
       real = real.replace('{key}', keyReal).replace('{id}', id);
 
-      utils.getDataFromURL(real)
+      Api.get(real)
         .then(function (body) {
 
           var metros = body.ResponseData.Metros;

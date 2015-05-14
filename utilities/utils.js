@@ -52,31 +52,6 @@ function randomProperty (object) {
 }
 
 /**
- * Get data from a given URL
- * @param  {string} url - URL to get data from
- * @return {obj} - Promise
- */
-function getDataFromURL (url) {
-  var deferred = Q.defer();
-
-  request(url, function (error, response, body) {
-    if (error) {
-      deferred.reject(error);
-    }
-
-    if (body) {
-      if (typeof body === 'string' && body.indexOf('<') === -1) {
-        body = JSON.parse(body);
-      }
-
-      deferred.resolve(body);
-    }
-  });
-
-  return deferred.promise;
-}
-
-/**
  * Takes minutes and returns a more readable string
  * @param minutes
  * @returns {string} - Humanized string
@@ -98,6 +73,5 @@ module.exports = {
   showHelp: showHelp,
   returnRandom: returnRandom,
   randomProperty: randomProperty,
-  getDataFromURL: getDataFromURL,
   calculateTimeFromMinutes: calculateTimeFromMinutes
 };

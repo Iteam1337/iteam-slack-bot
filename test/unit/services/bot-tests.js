@@ -20,6 +20,7 @@ describe('/BotService', function() {
 
   beforeEach(function () {
     deferred = q.defer();
+    apiDeferred = q.defer();
 
     lastfm = {
       getLastfm: sinon.stub().returns(deferred.promise)
@@ -39,12 +40,11 @@ describe('/BotService', function() {
       env: sinon.spy()
     };
 
+    Api = {
+      get: sinon.stub().returns(apiDeferred.promise),
+    }
+
     utils = {
-      getDataFromURL: sinon.stub().returns({
-        then: sinon.stub().returns({
-          catch: sinon.spy()
-        })
-      }),
       showHelp: sinon.spy()
     };
 
@@ -58,6 +58,7 @@ describe('/BotService', function() {
       './lastfm': lastfm,
       './flip': flip,
       '../utilities/utils': utils,
+      '../utilities/Api': Api,
       './error': error
     });
   });
@@ -79,7 +80,7 @@ describe('/BotService', function() {
       it('should call API with correct url', function() {
         bot.service()['9gag'](['9gag'], channel);
 
-        expect(utils.getDataFromURL).calledOnce.and.calledWith('http://infinigag.eu01.aws.af.cm/hot/0');
+        expect(Api.get).calledOnce.and.calledWith('http://infinigag.eu01.aws.af.cm/hot/0');
       });
     });
 
@@ -101,7 +102,7 @@ describe('/BotService', function() {
 
         var url = 'http://api.brewerydb.com/v2/search?q={q}&key={key}&type=beer';
         
-        expect(utils.getDataFromURL).calledOnce.and.calledWith(url.replace('{key}', process.env.BEER_KEY).replace('{q}', 'Camden+IPA'));
+        expect(Api.get).calledOnce.and.calledWith(url.replace('{key}', process.env.BEER_KEY).replace('{q}', 'Camden+IPA'));
       });
     });
 
@@ -132,12 +133,12 @@ describe('/BotService', function() {
         expect(bot.service().fml).to.be.a('function');
       });
 
-      xit('should call request with correct url', function() {
+      it('should call request with correct url', function() {
         var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
           
         bot.service().fml('fml', {});
 
-        expect(request).calledOnce.and.calledWith(url);
+        expect(Api.get).calledOnce.and.calledWith(url);
       });
     });
 

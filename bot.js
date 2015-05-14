@@ -6,7 +6,11 @@ var token = process.env.SLACK_TOKEN;
 
 if (process.env.CHATGANG) {
 	token = process.env.CHATGANG;
-};
+}
+
+if (process.env.SLACK_VIMLA) {
+	token = process.env.SLACK_VIMLA;
+}
 
 var autoReconnect = true;
 var autoMark      = true;
@@ -52,6 +56,10 @@ slack.on('message', function (message) {
 		botID = '<@U03M0AWRY>';
 	}
 
+	if (process.env.SLACK_VIMLA) {
+		botID = '<@U047914HH>';
+	}
+
 	// Do nothing if there is no text
 	if (!text || text.substr(0,12) !== botID) {
 		return;
@@ -63,6 +71,8 @@ slack.on('message', function (message) {
 
 	var regex = /"(?:[^"\\]|\\.)*"/g; // all inside quotation marks
 	var params = text.indexOf('"') > -1 ? text.match(regex) : text.split(' ').slice(2);
+
+	console.log(commands, params);
 
 	if (params.length) {
 		params.forEach(function (param) {

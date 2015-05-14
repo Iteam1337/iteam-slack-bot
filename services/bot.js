@@ -9,6 +9,7 @@ var Numbers = require('./numbers');
 var chuck   = require('./chuck');
 var SL      = require('./sl');
 var utils   = require('../utilities/utils');
+var Api   = require('../utilities/Api');
 var jsdom   = require('jsdom');
 
 function sendToChannel (channel, text) {
@@ -30,7 +31,7 @@ exports.service = function () {
     '9gag': function (commands, channel) {
       var url = 'http://infinigag.eu01.aws.af.cm/hot/0';
 
-      utils.getDataFromURL(url)
+      Api.get(url)
         .then(function (data) {
           if (data && data.data) {
             var randomGag = utils.returnRandom(data.data);
@@ -55,7 +56,7 @@ exports.service = function () {
         return;
       }
       
-      utils.getDataFromURL(url)
+      Api.get(url)
         .then(function (beers) {
           var beer = beers.data[0];
           var desc = beer.description || '';
@@ -73,7 +74,7 @@ exports.service = function () {
       chuck
         .get()
         .then(function (response) {
-          channel.send(response);
+          channel.send(response.value.joke);
         });
     },
 
@@ -122,7 +123,7 @@ exports.service = function () {
     fml: function (commands, channel) {
       var url = 'http://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&q=http://feeds.feedburner.com/fmylife';
 
-      utils.getDataFromURL(url)
+      Api.get(url)
         .then(function (fmls) {
           var randomFml = utils.returnRandom(fmls.responseData.feed.entries);
           var fml = randomFml.content.replace(/(<([^>]+)>)/ig,"") + '\n- _' + randomFml.author + '_';

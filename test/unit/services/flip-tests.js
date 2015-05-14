@@ -22,8 +22,9 @@ describe('/FlipService', function() {
     // Flip mock
     flipTextMock = sinon.stub();
 
-    flipTextMock.withArgs('iteam').returns('iteam');
+    flipTextMock.withArgs('iteam').returns('maeti');
     flipTextMock.withArgs('rickard').returns('drakcir');
+    flipTextMock.withArgs('laurin').returns('nirual');
 
     flip = proxyquire(process.cwd() + '/services/flip', {
       'flip-text': flipTextMock
@@ -59,13 +60,22 @@ describe('/FlipService', function() {
       });
 
       it('should return a flip for a provided value', function() {
-        expect(flip.doFlip(['flip', 'iteam'], 'test', slack)).to.eql('(╯°□°）╯︵ iteam');
+        expect(flip.doFlip(['flip', 'iteam'], 'test', slack)).to.eql('(╯°□°）╯︵ maeti');
       });
 
       it('should return a flip for me', function() {
         expect(flip.doFlip(['flip', 'me'], 'test', slack)).to.eql('(╯°□°）╯︵ drakcir');
       });
+
+      it('should return a flip with commands separated', function() {
+        expect(flip.doFlip(['flip', 'rickard+laurin'], 'test', slack)).to.eql('(╯°□°）╯︵ nirual drakcir');
+      });
+
+      it('should flip with lower case', function() {
+        expect(flip.doFlip(['flip', 'RiCKaRd'], 'test', slack)).to.eql('(╯°□°）╯︵ drakcir');
+      });
     });
+
 
     describe('rage', function() {
       it('should return a rage with table if no value is provided', function() {
@@ -73,7 +83,7 @@ describe('/FlipService', function() {
       });
 
       it('should return a rage for a provided value', function() {
-        expect(flip.doFlip(['rage', 'iteam'], 'test', slack)).to.eql('(ノಠ益ಠ)ノ彡 iteam');
+        expect(flip.doFlip(['rage', 'iteam'], 'test', slack)).to.eql('(ノಠ益ಠ)ノ彡 maeti');
       });
 
       it('should return a rage for me', function() {
@@ -91,7 +101,7 @@ describe('/FlipService', function() {
       });
 
       it('should return an unflip for me', function() {
-        expect(flip.doFlip(['unflip', 'me'], 'test', slack)).to.eql('drakcir ノ( º _ ºノ)');
+        expect(flip.doFlip(['unflip', 'me'], 'test', slack)).to.eql('rickard ノ( º _ ºノ)');
       });
     });
 
