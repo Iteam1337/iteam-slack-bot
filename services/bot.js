@@ -9,7 +9,7 @@ var Numbers = require('./numbers');
 var chuck   = require('./chuck');
 var SL      = require('./sl');
 var utils   = require('../utilities/utils');
-var Api   = require('../utilities/Api');
+var Api     = require('../utilities/Api');
 var jsdom   = require('jsdom');
 
 function sendToChannel (channel, text) {
