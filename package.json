@@ -15,19 +15,19 @@
   "license": "ISC",
   "dependencies": {
     "flip-text": "^1.1.0",
-    "jsdom": "^4.1.0",
+    "jsdom": "3.1.2",
     "lastfmapi": "0.0.6",
     "moviedb": "^0.2.0",
-    "q": "^1.2.0",
-    "request": "^2.54.0",
+    "q": "^1.4.1",
+    "request": "^2.55.0",
     "slack-client": "^1.4.0"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
+    "chai": "^2.3.0",
     "gulp": "^3.8.11",
     "gulp-babel": "^5.1.0",
     "gulp-mocha": "^2.0.1",
-    "gulp-nodemon": "^2.0.2",
+    "gulp-nodemon": "^2.0.3",
     "proxyquire": "^1.4.0",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0"

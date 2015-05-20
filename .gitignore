@@ -2,3 +2,5 @@ node_modules
 npm-debug.log
 .DS_Store
 .idea
+bot.sublime-project
+bot.sublime-workspace
