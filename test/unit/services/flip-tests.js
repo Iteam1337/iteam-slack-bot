@@ -93,7 +93,7 @@ describe('/FlipService', function() {
 
     describe('unflip', function() {
       it('should return an unflip with table if no value is provided', function() {
-        expect(flip.doFlip(['unflip'], 'test', slack)).to.eql('┻━┻ ノ( º _ ºノ)');
+        expect(flip.doFlip(['unflip'], 'test', slack)).to.eql('┬──┬ ノ( º _ ºノ)');
       });
 
       it('should return an unflip for a provided value', function() {

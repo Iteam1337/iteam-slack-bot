@@ -29,7 +29,7 @@ function doFlip (commands, user, slack) {
       .reverse()
       .join(' ');
   } else {
-    flipped = commands[0] === 'unflip' ? !commands[1] ? '┻━┻' : commands[1] === 'me' ? user.profile.first_name.toLowerCase() : commands[1].toLowerCase() : !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
+    flipped = commands[0] === 'unflip' ? !commands[1] ? '┬──┬' : commands[1] === 'me' ? user.profile.first_name.toLowerCase() : commands[1].toLowerCase() : !commands[1] ? '┻━┻' : commands[1] === 'me' ? flip(user.profile.first_name.toLowerCase()) : flip(commands[1].toLowerCase());
   }
 
   var returnValue = type !== 'unflip' ? flips[type] + flipped : flipped + flips[type];
