@@ -64,6 +64,10 @@ slack.on('message', function (message) {
 		botID = '<@U047914HH>';
 	}
 
+  if (process.env.BOT_ID) {
+		botID = '<@' + process.env.BOT_ID + '>'
+	}
+
 	// Do nothing if there is no text
 	if (!text || text.substr(0,12) !== botID) {
 		return;
