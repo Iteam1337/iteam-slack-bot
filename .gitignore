@@ -4,3 +4,4 @@ npm-debug.log
 .idea
 bot.sublime-project
 bot.sublime-workspace.env
+.env
