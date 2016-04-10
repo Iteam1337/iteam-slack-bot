@@ -1,16 +1,17 @@
 'use strict';
 
-var LastFm  = require('./lastfm');
-var Flip    = require('./flip');
-var tmdb    = require('./tmdb');
-var error   = require('./error');
-var country = require('./country');
-var Numbers = require('./numbers');
-var chuck   = require('./chuck');
-var SL      = require('./sl');
-var utils   = require('../utilities/utils');
-var Api     = require('../utilities/Api');
-var jsdom   = require('jsdom');
+var LastFm    = require('./lastfm');
+var Flip      = require('./flip');
+var tmdb      = require('./tmdb');
+var error     = require('./error');
+var country   = require('./country');
+var Numbers   = require('./numbers');
+var chuck     = require('./chuck');
+var SL        = require('./sl');
+var utils     = require('../utilities/utils');
+var Api       = require('../utilities/Api');
+var riotGames = require('./riotgames.js');
+var jsdom     = require('jsdom');
 
 function sendToChannel (channel, text) {
   channel.send(text.toString());
@@ -19,7 +20,7 @@ function sendToChannel (channel, text) {
 /**
  * Used as params for all calls.
  * All services don't need all of them.
- * 
+ *
  * @param  {array} commands - Array of commands
  * @param  {object} channel - Channel object
  * @param  {string} user - User ID
@@ -55,7 +56,7 @@ exports.service = function () {
         error.log('No API key for BreweryDb');
         return;
       }
-      
+
       Api.get(url)
         .then(function (beers) {
           var beer = beers.data[0];
@@ -172,7 +173,7 @@ exports.service = function () {
     number: function (commands, channel) {
       Numbers
         .get(commands)
-        .then(function (response) { 
+        .then(function (response) {
           channel.send(response);
         });
     },
@@ -196,6 +197,11 @@ exports.service = function () {
     unflip: function (commands, channel, user, slack) {
       var unflip = Flip.doFlip(commands, user, slack);
       channel.send(unflip);
+    },
+
+    summoner: function (commands, channel, user, slack) {
+      riotGames.summoner('request summoner data', commands, channel, user, slack)
+      channel.send('todo: implement')
     }
   }
 };
