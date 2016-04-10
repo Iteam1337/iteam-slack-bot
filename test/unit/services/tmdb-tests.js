@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var chai       = require('chai');
 var expect     = chai.expect;
 var sinon      = require('sinon');
@@ -37,7 +39,7 @@ describe('/TmdbService', function() {
     it('should call searchMovie if sent a title', function() {
       service.get(['movie', 'Requiem for a Dream']);
 
-      expect(mdb().searchMovie).calledOnce.and.calledWith({ query: 'Requiem for a Dream' });      
+      expect(mdb().searchMovie).calledOnce.and.calledWith({ query: 'Requiem for a Dream' });
     });
   });
 

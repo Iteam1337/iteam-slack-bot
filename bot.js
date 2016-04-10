@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config()
+
 var Slack  = require('slack-client');
 var Bot    = require('./services/bot');
 var token = process.env.SLACK_TOKEN;
